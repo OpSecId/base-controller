@@ -1,5 +1,3 @@
-# syntax=docker.io/docker/dockerfile:1
-
 # 1. Base image
 FROM node:20-alpine AS base
 WORKDIR /usr/src/app
