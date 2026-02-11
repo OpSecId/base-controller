@@ -51,6 +51,7 @@ services:
     environment:
       - NODE_ENV=production
       - REDIS_HOST=redis
+      - LOAD_TYPE=${LOAD_TYPE:-TEST}
     depends_on:
       postgres:
         condition: service_healthy

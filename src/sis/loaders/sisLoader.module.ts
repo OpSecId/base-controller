@@ -49,7 +49,8 @@ export class SisLoaderModule {
                         cfcc: CfccLoaderService,
                         mdcps: MdcpsLoaderService
                     ): SisLoaderService => {
-                        const type = configService.get<string>('LOAD_TYPE')?.toUpperCase();
+                        const raw = configService.get<string>('LOAD_TYPE');
+                        const type = (raw ?? 'TEST').toUpperCase();
                         switch (type) {
                             case 'TEST':
                                 return test;
