@@ -1,0 +1,67 @@
+# Dependencies (installed in image)
+node_modules
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Secrets and env (never ship in image)
+.env
+.env.*
+!.env-example
+
+# Data and uploads (sensitive or large)
+uploads
+backup.sql
+*.zip
+*.sql
+
+# Git and CI
+.git
+.github
+.gitignore
+
+# Build output (rebuilt in image)
+dist
+build
+.next
+out
+.nuxt
+coverage
+*.lcov
+.nyc_output
+
+# Logs and caches
+*.log
+.cache
+.parcel-cache
+.temp
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# Test and dev (not needed in production image)
+test
+*.spec.ts
+*.test.ts
+jest-e2e.json
+.vscode
+.idea
+
+# Docs and config not needed at runtime
+README.md
+LICENSE
+*.md
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+# DB config (inject at runtime if needed)
+pg_hba.conf
+postgresql.conf
+
+# Misc
+workflows.json
+prerequisites.sh
