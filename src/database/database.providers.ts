@@ -1,18 +1,15 @@
 import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
+import { getTypeOrmOptions } from '../config/database-config.util';
 
 export const databaseProviders = [
   {
     provide: 'DATA_SOURCE',
     useFactory: async () => {
       const configService = new ConfigService();
+      const options = getTypeOrmOptions(configService);
       const dataSource = new DataSource({
-        type: 'postgres',
-        host: configService.get<string>('WORKFLOW_DB_HOST', 'localhost'),
-        port: configService.get<number>('WORKFLOW_DB_PORT', 5435),
-        username: configService.get<string>('WORKFLOW_DB_USER', 'postgres'),
-        password: configService.get<string>('WORKFLOW_DB_PASSWORD', 'password123'),
-        database: configService.get<string>('WORKFLOW_DB_NAME', 'postgres'),
+        ...options,
         entities: [
             __dirname + '/../**/*.entity{.ts,.js}',
         ],

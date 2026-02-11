@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { getTypeOrmOptions } from './config/database-config.util';
 import { RouterModule } from '@nestjs/core';
 import { HttpModule } from '@nestjs/axios';
 import { AppController } from './app.controller';
@@ -47,12 +48,7 @@ import { EnrollmentModule } from './enrollment/enrollment.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('WORKFLOW_DB_HOST'),
-        port: parseInt(configService.get<string>('WORKFLOW_DB_PORT'), 10),
-        username: configService.get<string>('WORKFLOW_DB_USER'),
-        password: configService.get<string>('WORKFLOW_DB_PASSWORD'),
-        database: configService.get<string>('WORKFLOW_DB_NAME'),
+        ...getTypeOrmOptions(configService),
         autoLoadEntities: true,
         synchronize: true,
       }),

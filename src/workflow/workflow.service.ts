@@ -4,6 +4,7 @@ import * as defaultWorkflow from './default_workflow.json'
 import { Workflows } from "./workflows/workflows.entity";
 import { WorkflowParser, DefaultWorkflow, DefaultAction, DefaultDisplay, Workflow, Instance } from '@veridid/workflow-parser';
 import { ConfigService } from "@nestjs/config";
+import { getWorkflowDbConfig } from "../config/database-config.util";
 import { ExtendedAction } from './extensions/action.extension';
 import { ExtendedDisplay } from './extensions/display.extension';
 import { AcaPyService } from '../services/acapy.service';
@@ -25,12 +26,13 @@ export class WorkflowService implements OnModuleInit {
         private readonly actionExtension: ExtendedAction,
         private readonly workflowsService: WorkflowsService,
     ) {
+        const db = getWorkflowDbConfig(this.configService);
         this.controllerClient = {
-            user: this.configService.get<string>('WORKFLOW_DB_USER', 'postgres'),
-            password: this.configService.get<string>('WORKFLOW_DB_PASSWORD', 'password123'),
-            host: this.configService.get<string>('WORKFLOW_DB_HOST', 'localhost'),
-            port: this.configService.get<number>('WORKFLOW_DB_PORT', 5435),
-            database: this.configService.get<string>('WORKFLOW_DB_NAME', 'postgres'),
+            user: db.user,
+            password: db.password,
+            host: db.host,
+            port: db.port,
+            database: db.database,
         }
         this.defaultWorkflow = new DefaultWorkflow(this.controllerClient);
         this.defaultAction = new DefaultAction(this.actionExtension);

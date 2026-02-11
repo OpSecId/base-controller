@@ -1,19 +1,14 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Pool } from 'pg';
+import { getPgPoolConfig } from '../config/database-config.util';
 
 @Injectable()
 export class PostgresService implements OnModuleInit, OnModuleDestroy {
   private pool: Pool;
 
   constructor(private configService: ConfigService) {
-    this.pool = new Pool({
-      host: this.configService.get<string>('WORKFLOW_DB_HOST', 'localhost'),
-      port: this.configService.get<number>('WORKFLOW_DB_PORT', 5435),
-      user: this.configService.get<string>('WORKFLOW_DB_USER', 'postgres'),
-      password: this.configService.get<string>('WORKFLOW_DB_PASSWORD', 'password123'),
-      database: this.configService.get<string>('WORKFLOW_DB_NAME', 'postgres'),
-    });
+    this.pool = new Pool(getPgPoolConfig(this.configService));
   }
 
   async onModuleInit() {
